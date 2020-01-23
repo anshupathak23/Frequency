@@ -1,0 +1,49 @@
+1. import java.io.*;
+2. import java.util.*;
+3. 
+4. class FrequencyCounter {
+5. 
+6.     public static void main(String[] args) {
+7.         System.out.println("Enter the file path to analyse:");
+8.         Scanner scan = new Scanner(System.in);
+9.         String path = scan.nextLine();//Files present in this path will be analysed to count frequency
+10.         File directory = new File(path);
+11.         File[] listOfFiles = directory.listFiles();//To get the list of file-names found at the "directoy"
+12.         BufferedReader br;
+13.         String words[] = null;
+14.         String line;
+15.         String files;
+16.         Map<String, Integer> wordCount = new HashMap<String, Integer>();     //Creates an Hash Map for storing the words and its count
+17.         for (File file : listOfFiles) {
+18.             if (file.isFile()) {
+19.                 files = file.getName();
+20.                 try {
+21.                     if (files.endsWith(".txt") || files.endsWith(".TXT")) {  //Checks whether an file is an text file 
+22.                         br = new BufferedReader(new FileReader(files));      //creates an Buffered Reader to read the contents of the file
+23.                         while ((line = br.readLine()) != null) {
+24.                             line = line.toLowerCase();
+25.                             words = line.split("\\s+");                      //Splits the words with "space" as an delimeter 
+26.                             for (String read : words) {
+27. 
+28.                                 Integer freq = wordCount.get(read);
+29.                                 wordCount.put(read, (freq == null) ? 1 : freq + 1); //For Each word the count will be incremented in the Hashmap
+30.                             }
+31. 
+32.                         }
+33.                         br.close();
+34.                     }
+35. 
+36.                 } catch (NullPointerException | IOException e) {
+37.                     e.printStackTrace();
+38.                     System.out.println("I could'nt read your files:" + e);
+39.                 }
+40. 
+41.             }
+42. 
+43.         }
+44. 
+45.          System.out.println(wordCount.size() + " distinct words:");     //Prints the Number of Distict words found in the files read
+46.          System.out.println(wordCount);                                 //Prints the Word and its occurrence
+47. 
+48.     }
+49. }
